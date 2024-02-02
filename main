@@ -1,0 +1,328 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+class Sudoku {
+public:
+	int** tablero;
+public:
+	Sudoku() {
+		tablero = new int* [9];
+		for (int** p = tablero; p < tablero + 9; ++p) {
+			*p = new int[9];
+		}
+	}
+	void VerificarFilas() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				int val = tablero[i][j];
+				for (int p = 1; p < 9; p++) {
+					if (val == tablero[i][p]) {
+						tablero[i][p] = 0;
+					}
+				}
+			}
+		}
+	}
+	void VerificarColumnas() {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				int val = tablero[j][i];
+				for (int p = 0; p < 9; p++) {
+					if (val == tablero[p][i]) {
+						tablero[i][p] = 0;
+					}
+				}
+			}
+		}
+	}
+	void VerificarCuadrante(int x, int y) {
+		//I
+		if (x < 3 && y < 3) {
+			for (int i = 0; i<3;i++){
+				for (int j = 0; j < 3; j++) {
+					int val = tablero[i][j];
+					for (int p = 0; p < 3; p++) {
+						for (int q = 0; q < 3; q++) {
+							if (val == tablero[p][q] && (p!=i || q!=j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//II
+		else if (x < 3 && y > 2 &&y<6) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 3; j < 6; j++) {
+					int val = tablero[i][j];
+					for (int p = 0; p < 3; p++) {
+						for (int q = 4; q < 6; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//III
+		else if (x < 3 && y >=6) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 6; j < 9; j++) {
+					int val = tablero[i][j];
+					for (int p = 0; p < 3; p++) {
+						for (int q = 6; q < 9; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//IV
+		else if (x > 2&& x<6 && y < 3) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 0; j < 3; j++) {
+					int val = tablero[i][j];
+					for (int p = 3; p < 6; p++) {
+						for (int q = 0; q < 3; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//V
+		else if (x > 2 && x < 6 && y > 2 && y < 6) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 3; j < 6; j++) {
+					int val = tablero[i][j];
+					for (int p = 3; p < 6; p++) {
+						for (int q = 3; q < 6; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//VI
+		else if (x > 2 && x < 6 && y >=6) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 6; j < 9; j++) {
+					int val = tablero[i][j];
+					for (int p = 3; p < 6; p++) {
+						for (int q = 6; q < 9; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//VII
+		else if (x >= 6 && y < 3) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 0; j < 3; j++) {
+					int val = tablero[i][j];
+					for (int p = 6; p < 9; p++) {
+						for (int q = 0; q < 3; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//VIII
+		else if (x >= 6 && y > 2 && y < 6) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 3; j < 6; j++) {
+					int val = tablero[i][j];
+					for (int p = 6; p < 9; p++) {
+						for (int q = 3; q < 6; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+		//IX
+		else if (x >= 6 && y >=6) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 6; j < 9; j++) {
+					int val = tablero[i][j];
+					for (int p = 6; p < 9; p++) {
+						for (int q = 6; q < 9; q++) {
+							if (val == tablero[p][q] && (p != i || q != j)) {
+								tablero[p][q] = 0;
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+	bool VerificarCuadranteValor(int x, int y, int valor) {
+		//I
+		if (x < 3 && y < 3) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+			return true;
+		}
+		//II
+		else if (x < 3 && y > 2 && y < 6) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 3; j < 6; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//III
+		else if (x < 3 && y >= 6) {
+			for (int i = 0; i < 3; i++) {
+				for (int j = 6; j < 9; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//IV
+		else if (x > 2 && x < 6 && y < 3) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//V
+		else if (x > 2 && x < 6 && y > 2 && y < 6) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 3; j < 6; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//VI
+		else if (x > 2 && x < 6 && y >= 6) {
+			for (int i = 3; i < 6; i++) {
+				for (int j = 6; j < 9; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//VII
+		else if (x >= 6 && y < 3) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 0; j < 3; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//VIII
+		else if (x >= 6 && y > 2 && y < 6) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 3; j < 6; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+		//IX
+		else if (x >= 6 && y >= 6) {
+			for (int i = 6; i < 9; i++) {
+				for (int j = 6; j < 9; j++) {
+					if (valor == tablero[i][j]) {
+						return false;
+					}
+				}
+			}
+		}
+
+	}
+
+	void LlenarTablero() {
+		srand(time(NULL));
+		int x, y;
+		int random;
+		for (int** p = tablero; p < tablero + 9; ++p) {
+			for (int* q = *p; q < *p + 9; ++q) {
+				random = rand() % 101;
+				if (random <= 100) {
+					*q = 1 + rand() % 9;
+				}
+				else {
+					*q = 0;
+				}
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				VerificarCuadrante(i,j);
+			}
+		}
+		//VerificarColumnas();
+		//VerificarFilas();
+		
+	};
+	void ImprimirTablero() {
+		for (int** p = tablero; p < tablero + 9; ++p) {
+			for (int* q = *p; q < *p + 9; ++q) {
+				cout << *q<<' ';
+			}
+			cout << '\n';
+		}
+	}
+	void LlenarValores() {
+		int valor, x, y;
+		cout << "Ingrese el valor: ";
+		cin >> valor;
+		cout << "Ingrese la posicion x: ";
+		cin >> x;
+		cout << "Ingrese la posicion y: ";
+		cin >> y;
+		if (VerificarCuadranteValor(x, y, valor)) {
+			tablero[x][y] = valor;
+			cout << "Se ingreso el valor correctamente.\n";
+		}
+		else {
+			cout << "La posicion ya esta ocupada.\n";
+		}
+	}
+};
+int main() {
+	Sudoku miTablero;
+	miTablero.LlenarTablero();
+	miTablero.ImprimirTablero();
+	miTablero.LlenarValores();
+	miTablero.ImprimirTablero();
+
+	return 0;
+}
